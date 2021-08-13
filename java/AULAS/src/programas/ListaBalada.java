@@ -7,7 +7,7 @@ public class ListaBalada {
 
 	public static void main(String[] args) {
 
-		Pessoa primeiroFila = new Pessoa();
+		Pessoa primeiroFila = new Pessoa("jjk");
 		primeiroFila.setNome("Paulo");
 		primeiroFila.anoNascimento = 2000;
 		
@@ -15,7 +15,7 @@ public class ListaBalada {
 		
 		System.out.println("Quem é fulano? Fulano é " + primeiroFila.nome);
 		System.out.println("idade " + (2021 - primeiroFila.anoNascimento)); 
-		System.out.println(primeiroFila.nome+ " sua idade é " + primeiroFila.calcIdade(2021));
+		System.out.println(primeiroFila.nome + " sua idade é " + primeiroFila.calcIdade(2021));
 		
 		//UTILIZANDO O METODO CONSTRUTOR(public)
 		primeiroFila = new Pessoa("JP");

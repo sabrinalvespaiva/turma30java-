@@ -7,10 +7,16 @@ public class AviaoClass {
 	public int numFuncionarios;
 	public String status;
 	public boolean piloto;
-	public boolean copiloto; 
+	public boolean copiloto;
+	public int velocidade;
+	public int reduzVelocidade;
+	public int aumentaVelocidade;
+	public boolean freios; 
+	
 	
 	//METODOS 
-	public void numAssentos() {
+	public void velocidade() {
+		velocidade -= reduzVelocidade;
 	}
 	
 	

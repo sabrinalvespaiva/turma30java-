@@ -4,7 +4,7 @@ public class Pessoa {
 	
 	//ATRIBUTOS
 	//PRIVATE SO FICA DISPONIVEL DENTRO DA CLASSE, NAO DA PRA USAR EM OUTRO PROJETO
-	private String nome;
+	public String nome;
 	public int anoNascimento;
 	public String cpf;
 	public char pronome; //O, A, E
@@ -20,6 +20,7 @@ public class Pessoa {
 		this.nome = nome;
 		this.cpf = cpf;
 	}
+	
 	//SOBRECARGA DO CONSTRUTOR QUE PEGOU TODOS OS ATRIBUTOS (para gerar de forma automatica clica 
 	//com o lado direito do mouse, Alt+Shift+S + generate construtor using fields 
 	public Pessoa(String nome, int anoNascimento, String cpf, char pronome, boolean ativo) {

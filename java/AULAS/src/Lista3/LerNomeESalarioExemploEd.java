@@ -2,7 +2,7 @@ package Lista3;
 
 import java.util.Scanner;
 
-public class CopinhaExemploEdDoWhile {
+public class LerNomeESalarioExemploEd {
 
 	public static void main(String[] args) {
 		//precisa do nome e do salario
