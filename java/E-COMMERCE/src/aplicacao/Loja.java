@@ -3,174 +3,255 @@ package aplicacao;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import entidades.Aparencia;
-import entidades.Pizza;
+import entidades.Carrinho;
 import entidades.Produto;
-import entidades.Salgado;
 
 public class Loja {
 
 	public static void main(String[] args) {
 
-		// Atributos
-				Scanner leia = new Scanner(System.in);
-				char op = 'S';
-				char op1;
-				char op2;
-				char op3;
-				String auxCod = " ";
-				int pos, quantidade;
+		Scanner leia = new Scanner(System.in); // SCANNER
+		// ------------ VARIAVEIS DA COMPRA
+		int checarEstoque = 0, numeroPedido = 0, qntdDigitada = 0, produtoEscolhido = 0, qntdTotal = 0;
+		char comprarSN = 'S', opcaoPagamento = ' ', continuarCompra = 'S', tamanho = 'G';
+		boolean checarCodigo = false, checarQntd = false;
+		double total = 0.0, auxTotal = 0.0, parcela = 0.0, pagamento = 0.0;
+		String codigoDigitado = "", nomeCliente = "";
 
-				// Listas: armazenam os cat�logos de pizzas e salgados e criam carrinho
-				List<Produto> carrinho = new ArrayList<>();
-				List<Produto> cardapioPizza = new ArrayList<>();
-				List<Produto> cardapioSalgado = new ArrayList<>();
-				List<Produto> comidas = new ArrayList<>();
+		// Listas: armazenam os catálogos de pizzas e salgados e criam carrinho
+		List<Carrinho> carrinho = new ArrayList<>(); // CARRINHO
+		List<Produto> produtos = new ArrayList<>();
 
-				// Card�pio de Pizzas
-				comidas.add(new Produto("G5-1", "Mussarela ", 43.00, 10));
-				comidas.add(new Produto("G5-2", "Calabresa ", 39.00, 10));
-				comidas.add(new Produto("G5-3", "Portuguesa", 45.00, 10));
-				comidas.add(new Produto("G5-4", "Frango    ", 39.00, 10));
-				comidas.add(new Produto("G5-5", "Milana    ", 46.00, 10));
+		// CARDAPIO
+		produtos.add(new Produto("G5-1", "Pizza de Mussarela ", 28.00, 10));
+		produtos.add(new Produto("G5-2", "Pizza de Calabresa ", 28.00, 10));
+		produtos.add(new Produto("G5-3", "Pizza de Portuguesa", 30.00, 10));
+		produtos.add(new Produto("G5-4", "Pizza de Frango/Cat", 30.00, 10));
+		produtos.add(new Produto("G5-5", "Pizza de Milana    ", 33.00, 10));
+		produtos.add(new Produto("G5-6", "Salgado  Coxinha   ", 3.00, 10));
+		produtos.add(new Produto("G5-7", "Salgado  Pão Pizza ", 3.00, 10));
+		produtos.add(new Produto("G5-8", "Salgado  Pastel    ", 3.00, 10));
+		produtos.add(new Produto("G5-9", "Salgado  Presunto/Q", 3.00, 10));
+		produtos.add(new Produto("G5-10", "Salgado  Salsicha ", 3.00, 10));
 
-				// Card�pio de Salgados
-				comidas.add(new Produto("G5-6", "Coxinha   ", 5.00, 10));
-				comidas.add(new Produto("G5-7", "P�o Pizza ", 5.00, 10));
-				comidas.add(new Produto("G5-8", "Pastel    ", 5.00, 10));
-				comidas.add(new Produto("G5-9", "Presunto/Q", 5.00, 10));
-				comidas.add(new Produto("G5-10", "Salsicha ", 5.00, 10));
+		// -------------------------------------- COMEÇAR COMPRA
+		System.out.print("\n Deseja comprar [S/N]: ");
+		comprarSN = leia.next().toUpperCase().charAt(0);
+		while (comprarSN == 'S') {
+			// ------------------------------------- COMEÇAR CARRINHO
+			// ZERA VARIÁVEIS DE COMPRA
+			carrinho.clear();
+			total = 0.0;
+			qntdTotal = 0;
+			pagamento = 0.0;
+			parcela = 0.0;
+			continuarCompra = 'S';
+			nomeCliente = "";
 
-				// A fazer: Mostrar todo o cat�logo de produtos
-
-				// In�cio do Programa
-
-				System.out.println("Voc� deseja comprar? [S/N]");
-				op3 = leia.next().toUpperCase().charAt(0);
-				int i = 0;
-				// Processamentos
+			// CHECA O ESTOQUE TOTAL
+			checarEstoque = 0;
+			for (Produto item : produtos) {
+				checarEstoque += item.getEstoque();
+			}
+			// AVISA SE ESTAMOS SEM ESTOQUE
+			if (checarEstoque <= 0) {
+				System.out.print("\nSEM PRODUTOS NO ESTOQUE!\n");
+			}
+			while (continuarCompra == 'S' && checarEstoque > 0) {
+				// ------------------------------------ CÓDIGO PARA COMPRA
+				// --------------------------------------- MENU DE OPÇÕES
+				// CABEÇALHO MENU
+				System.out.print("\n");
+				System.out.print("\n                    CARDÁPIO                    ");
+				System.out.print("\n");
+				System.out.print("\n ");
+				System.out.print("\n  COD\t VALOR\t ESTOQUE  PRODUTO\n");
+				// ITENS MENU
+				for (Produto comida : produtos) {
+					System.out.print(" \n  ");
+					System.out.printf("%s\t %.2f\t  %d\t    %s\n", comida.getCodigo(), comida.getPreco(),
+							comida.getEstoque(), comida.getSabor());
+				}
+				// IMPRIME O CARRINHO
+				System.out.print("\n");
+				System.out.print("\n                    CARRINHO                    ");
+				System.out.print("\n");
+				// SE TIVER ALGO NO CARRINHO: CABEÇALHO CARRINHO
+				if (carrinho.size() > 0) {
+					System.out.print("\n  QNTD\t│ NOME\n");
+				}
+				// SE TIVER ALGO NO CARRINHO: ITENS CARRINHO
+				for (Carrinho item : carrinho) {
+					System.out.print("\n  ");
+					System.out.print(item.getQuantidade() + "\t│ " + item.getNomeProduto() + "\n");
+				}
 				do {
-					pos= -1;
-					// Escolha: Pizza ou Salgado
-					Aparencia.pizzaSalgado();
-					op2 = leia.next().toUpperCase().charAt(0);
-
-					// Caso a escolha seja Pizza
-					if (op2 == 'P') {
-
-						// Imprime cat�logo de Pizzas
-						Aparencia.mostraTLoja();
-						for (Produto menu : comidas) {
-							System.out.println(menu.getCodigo() + "\t\t" + menu.getSabor() + "\t\t" + menu.getPreco() + "\t\t"
-									+ menu.getEstoque());
-						}
-						// Caso a escolha seja Salgado
-					} else if (op2 == 'S') {
-
-						// Imprime cat�logo de Salgados
-						Aparencia.mostraTLoja();
-						for (Produto menu : comidas) {
-							System.out.println(menu.getCodigo() + "\t\t" + menu.getSabor() + "\t\t" + menu.getPreco() + "\t\t"
-									+ menu.getEstoque());
+					// LÊ CÓDIGO
+					System.out.print("\n");
+					System.out.print("\n Código do produto: ");
+					codigoDigitado = leia.next().toUpperCase();
+					// CONSERTA ERRO DE DIGITAÇÃO DO CÓDIGO (SEM G6-)
+					if (codigoDigitado.length() <= 2) {
+						codigoDigitado = "G6-" + codigoDigitado;
+					}
+					// CHECA SE CÓDIGO EXISTE
+					for (Produto item : produtos) {
+						if (codigoDigitado.equals(item.getCodigo())) {
+							checarCodigo = false;
+							produtoEscolhido = produtos.indexOf(item);
+							break;
+						} else {
+							checarCodigo = true;
 						}
 					}
-		//---------------------------------------------------------------------------------------------
-					// ^^CODIGO BOM
+					if (checarCodigo == true) {
+						System.out.print("\n");
+						System.out.print("\n Este produto não existe!");
+						System.out.print("\n");
+					} else if (produtos.get(produtoEscolhido).getEstoque() <= 0) {
+						System.out.print("\n");
+						System.out.print("\n Este produto já se esgotou! ");
+						System.out.print("\n");
+						checarCodigo = true;
+					}
+				} while (checarCodigo); // FIM MENU ----------------------------------------------------------
+				// --------------------------------- TIRAR COMPRAS DO ESTOQUE
+				System.out.print("\n VALOR\t ESTOQUE  PRODUTO\n");
+				System.out.print("\n");
+				System.out.print(" " + produtos.get(produtoEscolhido).getPreco());
+				System.out.print("\t " + produtos.get(produtoEscolhido).getEstoque());
+				System.out.print("\t   " + produtos.get(produtoEscolhido).getSabor() + "\n");
 
-					System.out.println("SELECIONE O CODIGO DO PRODUTO: ");
-					auxCod = leia.next().toUpperCase();
+				System.out.println("Escolha o tamanho: [G]grande, [M]medio, [P]pequeno");
+				System.out.println("Adicional Grande 50% | Adicional Medio 32,5% | Pequeno sem adicional");
+				tamanho = leia.next().toUpperCase().charAt(0);
 
-					for (int x=0; x<comidas.size(); x++ ) {
-		                
-		                if (comidas.get(x).getCodigo().equals(auxCod)) {
-		                    pos = x;
-		                    break;
-		                }
-		                
-		            }
+				if (tamanho == 'G') {
+					System.out.println(
+							"\nValor com adicional do tamanho: " + ((produtos.get(produtoEscolhido).getPreco() * 0.50)
+									+ produtos.get(produtoEscolhido).getPreco()));
+					auxTotal += ((produtos.get(produtoEscolhido).getPreco() * 0.50)
+							+ produtos.get(produtoEscolhido).getPreco());
+				} else if (tamanho == 'M') {
+					auxTotal += ((produtos.get(produtoEscolhido).getPreco() * 0.325)
+							+ produtos.get(produtoEscolhido).getPreco());
+					System.out.println(
+							"Valor com adicional do tamanho: " + ((produtos.get(produtoEscolhido).getPreco() * 0.325)
+									+ produtos.get(produtoEscolhido).getPreco()));
+				} else if (tamanho == 'P') {
+					System.out.println("Valor do produto: " + (produtos.get(produtoEscolhido).getPreco()));
+				} else {
+					System.out.println("Tamanho inválido!");
+				}
 
-					
-					if (pos>=0) {
-		                System.out.println("Produto escolhido: ");
-		                System.out.println("COD\tVALOR\tESTOQUE\tPRODUTO");
-		                System.out.printf("%s\t%.2f\t%d\t%s\n",comidas.get(pos).getCodigo(),comidas.get(pos).getPreco(),comidas.get(pos).getEstoque(),comidas.get(pos).getSabor());
-		                System.out.println("Informe quantos tu vai querer :");
-		                int auxQtde = leia.nextInt();
-		                
-		                if (auxQtde< 0) {
-		                    System.out.println("Impossivel realizar, valor negativo!!! Ae n�o n�!!!");
-		                }
-		                else if (auxQtde==0) {
-		                    System.out.println("Impossivel realizar, quantidade zero. T� dificil!");
-		                }
-		                else if (comidas.get(pos).getEstoque()==0){
-		                    System.out.println("Impossivel realizar, produto sem estoque!!!");
-		                }
-		                else if (comidas.get(pos).getEstoque()< auxQtde) {
-		                    System.out.print("Impossivel realizar, quantidade maior que estoque!!");
-		                } else {
-		                	comidas.add(new Produto(comidas.get(pos).getCodigo(),comidas.get(pos).getSabor(),comidas.get(pos).getPreco(),auxQtde));
-		                }
-		            }
-		            else {
-		                System.out.println("Codigo informado n�o existe!!!");
-		            }
-		            System.out.println("Continua S-sim ou N-nao :");
-		            op = leia.next().toUpperCase().charAt(0);
-		            //fechamento do carrinho - n�o ta pronto
-		            //System.out.println("vc vai pagar : R$"+(auxQtde*lista.get(pos).getValor()));
-		            //lista.get(pos).retiraEstoque(auxQtde);
-		        } while (op=='S');
-		        System.out.println("FECHAMENTO DA COMPRA");
-		        System.out.println("COD\tVALOR\tESTOQUE\tPRODUTO");
-		        double auxTotal=0;
-		        for (Produto escolhido : carrinho) {
-		                for (int x=0; x<comidas.size(); x++ ) {
-		                    
-		                    if (carrinho.get(x).getCodigo().equals(escolhido.getCodigo())) {
-		                        pos = x;
-		                        break;
-		                    }
-		                    
-		                }
-		            
-		            System.out.println(escolhido.getCodigo()+"\t"+escolhido.getPreco()+"\t"+escolhido.getEstoque()+"\t"+escolhido.getSabor());
-		            auxTotal = auxTotal + (escolhido.getPreco()*escolhido.getEstoque());
-		            carrinho.get(pos).retiraEstoque(escolhido.getEstoque());
-		        }
-		        System.out.println("FECHAMENTO R$: "+auxTotal);
-		        carrinho.clear();
-		        
-		        System.out.println("LISTA ATUAL");
-		        System.out.println("COD\tVALOR\tESTOQUE\tPRODUTO");
-		        for (Produto item : comidas) {
-		            
-		            System.out.println(item.getCodigo()+"\t"+item.getPreco()+"\t"+item.getEstoque()+"\t"+item.getSabor());
-		        }
-		        System.out.println("AT� BREVE!!!");
-		    }
+				do {
+					System.out.print("\n");
+					System.out.print(" Quantidade: ");
+					qntdDigitada = leia.nextInt();
+					if (produtos.get(produtoEscolhido).retirarEstoque(qntdDigitada)) {
+						carrinho.add(new Carrinho(qntdDigitada, produtoEscolhido,
+								produtos.get(produtoEscolhido).getSabor()));
+						checarQntd = false;
+						System.out.print("");
+						qntdTotal += qntdDigitada;
+					} else {
+						System.out.println(" Quantidade inválida!");
+						checarQntd = true;
+					}
+				} while (checarQntd);
+				System.out.print("\n\n Continuar comprando [S/N]: ");
+				continuarCompra = leia.next().toUpperCase().charAt(0);
+			} // FIM COMPRA
+				// CALCULA O TOTAL COM BASE NO CARRINHO
+			for (Carrinho item : carrinho) {
+				total += item.getQuantidade() * auxTotal;
+			}
+			// ------------------------------- ESCOLHER FORMA DE PAGAMENTO
+			// IMPRIME O CARRINHO
+			System.out.print("\n");
+			System.out.print("\n                    CARRINHO                    ");
+			System.out.print("\n");
+			// CABEÇALHO CARRINHO
+			System.out.print("\n  QNTD\t│ NOME\n");
+			// ITENS CARRINHO
+			for (Carrinho item : carrinho) {
+				System.out.print("\n  ");
+				System.out.print(item.getQuantidade() + "\t│ " + item.getNomeProduto() + "\n");
+			}
+			System.out.printf("\n");
+			System.out.printf("\n OPÇÕES DE PAGAMENTO ");
+			System.out.printf("\n");
+			System.out.printf("\n ");
+			System.out.printf("\n TOTAL COM IMPOSTO  R$%.2f", total = (total +(total * 0.09)));
+			System.out.printf("\n ");
+			System.out.printf("\n » Opção [1]: A vista      │ 10%% de desconto");
+			System.out.printf("\n » Opção [2]: 1× no cartão │ 10%% de acrescimo");
+			System.out.printf("\n » Opção [3]: 2× no cartão │ 15%% de acrescimo\n");
 
-		}
-//					
-//					System.out.println("INFORME QUANTAS UNIDADES: ");
-//					quantidade = leia.nextInt();
-		//
-//					/*
-//					 * System.out.println("Digite a quantidade desejada: "); int quantidade =
-//					 * leia.nextInt(); if (){
-//					 * System.out.println("Digite o tamanho desejado: [M/G]"); } else {
-//					 * System.out.println("Digite o tamanho desejado: [P/M/G]"); }
-//					 */
-//					if (i > 1) {
-		//
-//						System.out.println("Comprar mais? [S/N]");
-//						op = leia.next().toUpperCase().charAt(0);
-		//
-//					}
-//					i++;
-//				} while (op == 'S');
-		//
-//			}
-		//
-		//}
+			do {
+				System.out.print("\n Opção [1/2/3]: ");
+				opcaoPagamento = leia.next().charAt(0);
+				if (opcaoPagamento != '1' & opcaoPagamento != '2' & opcaoPagamento != '3') {
+					System.out.print("\n");
+					System.out.print("\n Digite uma opção válida! [1/2/3] \n");
+					System.out.print("\n");
+				}
+			} while (opcaoPagamento != '1' & opcaoPagamento != '2' & opcaoPagamento != '3');
+			if (opcaoPagamento == '1') {
+				pagamento = total - (total * 0.1);
+			} else if (opcaoPagamento == '2') {
+				pagamento = total + (total * 0.1);
+			} else if (opcaoPagamento == '3') {
+				pagamento = total + (total * 0.15);
+				parcela = pagamento / 2;
+			}
+			// ------------------------------------ EMITIR NOTA FISCAL
+			System.out.print("\n Seu nome: ");
+			nomeCliente = leia.next();
+
+			// CABEÇALHO CARRINHO
+			System.out.print("\n  COD\t VALOR\t QNTD\t TOTAL\t PRODUTO\n");
+			// ITENS CARRINHO
+			for (Carrinho item : carrinho) {
+				System.out.print("  " + produtos.get(item.getIdProduto()).getCodigo() + "\t ");
+				System.out.print(produtos.get(item.getIdProduto()).getPreco() + "\t ");
+				System.out.print(item.getQuantidade() + "\t ");
+				System.out.print((item.getQuantidade() * produtos.get(item.getIdProduto()).getPreco()) + "\t ");
+				System.out.print(produtos.get(item.getIdProduto()).getSabor() + "\n");
+			}
+			System.out.print("------------------------------------------------------\n");
+			System.out.print("\nQNTD TOTAL DE ITENS\t\t\t    " + qntdTotal);
+			System.out.printf("\nVALOR TOTAL\t\t\t\t    R$ %.2f", total);
+
+			if (opcaoPagamento == '1') {
+				System.out.printf("\nDESCONTO\t\t\t\t    %.2f", ((total) * 0.1));
+			} else if (opcaoPagamento == '2') {
+				System.out.printf("\nACRESCIMO\t\t\t\t    %.2f", ((total) * 0.1));
+			} else if (opcaoPagamento == '3') {
+				System.out.printf("\nACRESCIMO\t\t\t\t    %.2f", ((total) * 0.15));
+			}
+
+			System.out.printf("\nVALOR A PAGAR\t\t\t\t    R$ %.2f", pagamento);
+			System.out.print("\nFORMA DE PAGAMENTO\t\t\t    ");
+
+			if (opcaoPagamento == '1') {
+				System.out.print("A VISTA");
+			} else if (opcaoPagamento == '2') {
+				System.out.print("1× CARTAO");
+			} else if (opcaoPagamento == '3') {
+				System.out.printf("2× CARTAO\nVALOR DA PARCELA\t\t\t    %.2f", parcela);
+			}
+
+			numeroPedido++;
+			System.out.print("\n\nNUMERO DO PEDIDO: " + numeroPedido + " CLIENTE: " + nomeCliente.toUpperCase());
+			System.out.print("\n------------------------------------------------------\n");
+			System.out.print("\n Deseja comprar? [S/N]: ");
+			comprarSN = leia.next().toUpperCase().charAt(0);
+		} // FIM CARRINHO
+
+		System.out.print("\n Até breve!!\n");
+
+		leia.close();
+		// FIM DO PROGRAMA
+	}
+}

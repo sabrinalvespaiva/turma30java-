@@ -3,22 +3,22 @@ package entidades;
 import java.util.Scanner;
 
 public class Produto {
-	
+
 	Scanner leia = new Scanner(System.in);
 	// Atributos
+
 	private String codigo;
 	private String sabor;
 	private double preco;
 	private int estoque;
-
 	// Construtores
-	
+
 	public Produto(String codigo, int estoque) {
 		super();
 		this.codigo = codigo;
 		this.estoque = estoque;
 	}
-	
+
 	public Produto(String codigo, String sabor, double preco, int estoque) {
 		super();
 		this.codigo = codigo;
@@ -73,17 +73,20 @@ public class Produto {
 
 	}
 
-	public void retiraEstoque(int decremento) {
-		if (decremento > this.estoque) {
-			System.out.println("QUANTIDADE INDISPONÍVEL");
+	public boolean retirarEstoque(int quantidade) {
+		if (quantidade <= 0) {
+			return false;
+		} else if (quantidade > this.estoque) {
+			return false;
 		} else {
-			this.estoque = this.estoque - decremento;
+			this.estoque -= quantidade;
+			return true;
 		}
 	}
 
 	public void incluiEstoque(int incremento) {
 		if (incremento <= 0) {
-			System.out.println("QUANTIDADE INVÁLIDA");
+			System.out.println("ADICIONE UM NUMERO POSITIVO");
 		} else {
 			this.estoque = this.estoque + incremento;
 		}
