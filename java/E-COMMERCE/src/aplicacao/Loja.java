@@ -18,7 +18,7 @@ public class Loja {
 		double total = 0.0, auxTotal = 0.0, parcela = 0.0, pagamento = 0.0;
 		String codigoDigitado = "", nomeCliente = "";
 
-		// Listas: armazenam os catálogos de pizzas e salgados e criam carrinho
+		//Listas: armazenam os catálogos de pizzas e salgados e criam carrinho
 		List<Carrinho> carrinho = new ArrayList<>(); // CARRINHO
 		List<Produto> produtos = new ArrayList<>();
 
@@ -41,12 +41,6 @@ public class Loja {
 			// ------------------------------------- COMEÇAR CARRINHO
 			// ZERA VARIÁVEIS DE COMPRA
 			carrinho.clear();
-			total = 0.0;
-			qntdTotal = 0;
-			pagamento = 0.0;
-			parcela = 0.0;
-			continuarCompra = 'S';
-			nomeCliente = "";
 
 			// CHECA O ESTOQUE TOTAL
 			checarEstoque = 0;
@@ -58,13 +52,11 @@ public class Loja {
 				System.out.print("\nSEM PRODUTOS NO ESTOQUE!\n");
 			}
 			while (continuarCompra == 'S' && checarEstoque > 0) {
-				// ------------------------------------ CÓDIGO PARA COMPRA
-				// --------------------------------------- MENU DE OPÇÕES
 				// CABEÇALHO MENU
 				System.out.print("\n");
-				System.out.print("\n                    CARDÁPIO                    ");
+				System.out.println("\t\t    * PATYPIZZAS *");
 				System.out.print("\n");
-				System.out.print("\n ");
+				System.out.println("\t\t     *** MENU ***\n");
 				System.out.print("\n  COD\t VALOR\t ESTOQUE  PRODUTO\n");
 				// ITENS MENU
 				for (Produto comida : produtos) {
@@ -78,7 +70,7 @@ public class Loja {
 				System.out.print("\n");
 				// SE TIVER ALGO NO CARRINHO: CABEÇALHO CARRINHO
 				if (carrinho.size() > 0) {
-					System.out.print("\n  QNTD\t│ NOME\n");
+					System.out.print("\n  QUANTIDADE\t│ PRODUTO\n");
 				}
 				// SE TIVER ALGO NO CARRINHO: ITENS CARRINHO
 				for (Carrinho item : carrinho) {
@@ -90,9 +82,9 @@ public class Loja {
 					System.out.print("\n");
 					System.out.print("\n Código do produto: ");
 					codigoDigitado = leia.next().toUpperCase();
-					// CONSERTA ERRO DE DIGITAÇÃO DO CÓDIGO (SEM G6-)
+					// CONSERTA ERRO DE DIGITAÇÃO DO CÓDIGO (SEM G5-)
 					if (codigoDigitado.length() <= 2) {
-						codigoDigitado = "G6-" + codigoDigitado;
+						codigoDigitado = "G5-" + codigoDigitado;
 					}
 					// CHECA SE CÓDIGO EXISTE
 					for (Produto item : produtos) {
@@ -209,9 +201,9 @@ public class Loja {
 			System.out.print("\n Seu nome: ");
 			nomeCliente = leia.next();
 
-			// CABEÇALHO CARRINHO
+			// CABEÇALHO NOTA FISCAL
 			System.out.print("\n  COD\t VALOR\t QNTD\t TOTAL\t PRODUTO\n");
-			// ITENS CARRINHO
+			// ITENS CARRINHO - NOTA FISCAL
 			for (Carrinho item : carrinho) {
 				System.out.print("  " + produtos.get(item.getIdProduto()).getCodigo() + "\t ");
 				System.out.print(produtos.get(item.getIdProduto()).getPreco() + "\t ");

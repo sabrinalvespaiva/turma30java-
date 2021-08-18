@@ -1,0 +1,27 @@
+
+create database db_escola;
+
+use db_escola;
+create table tb_estudantes (
+id bigint (3) auto_increment,
+nome varchar (50) not null,
+idade bigint (2),
+nota decimal (2),
+ativo boolean,
+primary key (id)
+);
+
+insert into tb_estudantes (nome, idade, nota, ativo) values ("DANIEL", 8, 7.00, true);
+insert into tb_estudantes (nome, idade, nota, ativo) values ("GABRIELA", 5, 9.00, true);
+insert into tb_estudantes (nome, idade, nota, ativo) values ("TIAGO", 6, 6.00, true);
+insert into tb_estudantes (nome, idade, nota, ativo) values ("ANA", 5, 9.00, true);
+insert into tb_estudantes (nome, idade, nota, ativo) values ("WESLEY", 11, 7.00, true);
+insert into tb_estudantes (nome, idade, nota, ativo) values ("DANILO", 8, 5.00, true);
+insert into tb_estudantes (nome, idade, nota, ativo) values ("ARLEN", 4, 10.00, true);
+insert into tb_estudantes (nome, idade, nota, ativo) values ("LUCAS", 6, 10.00, true);
+
+select * from tb_estudantes where nota > 7
+
+select * from tb_estudantes where nota <= 7
+
+update tb_estudantes set nota = 1.00 where id = 3;

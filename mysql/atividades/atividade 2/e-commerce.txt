@@ -1,0 +1,29 @@
+--EXERCICIO 2
+
+create database db_ecommerce
+
+use db_ecommerce;
+create table tb_produtos (
+id bigint (3) auto_increment,
+nome varchar (50) not null,
+marca varchar (50) not null,
+preco bigint (5),
+estoque bigint (3),
+primary key (id)
+);
+
+--POPULAR A TABELA PRODUTO
+insert into tb_produtos (nome, marca, preco, estoque) values ("CALÇA", "ADIDAS", 299, 10);
+insert into tb_produtos (nome, marca, preco, estoque) values ("BLUSA", "NIKE", 600, 10);
+insert into tb_produtos (nome, marca, preco, estoque) values ("SHORTS", "QUECHUA", 120, 10);
+insert into tb_produtos (nome, marca, preco, estoque) values ("SAIA", "PUMA", 99, 10);
+insert into tb_produtos (nome, marca, preco, estoque) values ("MOLETOM", "VANS", 699, 10);
+insert into tb_produtos (nome, marca, preco, estoque) values ("TÊNIS", "ADIDAS", 699, 10);
+insert into tb_produtos (nome, marca, preco, estoque) values ("BOLSA", "NIKE", 100, 10);
+insert into tb_produtos (nome, marca, preco, estoque) values ("BONÉ", "NIKE", 299, 10);
+
+select * from tb_produtos where preco > 500
+
+select * from tb_produtos where preco < 500
+
+update tb_produtos set estoque = 5 where id = 5;
