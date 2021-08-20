@@ -1,0 +1,49 @@
+-- CRIAÇÃO DO BANCO DE DADOS RELACIONAL
+create database db_generation_game_online;
+
+-- USANDO O DB E CRIANDO A TABELA DE CLASSES
+use db_generation_game_online;
+create table tb_classes (
+	id_classes bigint (10) auto_increment,
+	categoria varchar (20) not null check (categoria in ("ELFO", "ANOES", "ORCS", "GOBLINS")),
+	nivel bigint (20) not null check (nivel in (1,2,3)),
+	primary key (id_classes)
+);
+
+-- USANDO O DB E CRANDO A TABELA DE PERSONAGENS
+use db_generation_game_online;
+create table tb_personagens (
+	id_personagens bigint (10) auto_increment,
+	nome varchar (20) not null,
+	ataque bigint (20) not null,
+	defesa bigint (20) not null,
+	classes_personagens bigint (10) not null,
+	primary key (id_personagens),
+    foreign key (classes_personagens) references tb_classes(id_classes)
+);
+
+-- POPULANDO A TABELA DE CLASSES
+insert into tb_classes (categoria, nivel) values ("ELFO",2); 
+insert into tb_classes (categoria, nivel) values ("ANOES",1); 
+insert into tb_classes (categoria, nivel) values ("ORCS",1);
+insert into tb_classes (categoria, nivel) values ("GOBLINS",3); 
+insert into tb_classes (categoria, nivel) values ("ELFOS",2); 
+
+-- POPULANDO A TABELA DE PERSONAGENS
+insert into tb_personagens (nome, ataque, defesa, classes_personagens) values ("SHELDON", 1000, 1000, 2);
+insert into tb_personagens (nome, ataque, defesa, classes_personagens) values ("PENNY", 2500, 1000, 3);
+insert into tb_personagens (nome, ataque, defesa, classes_personagens) values ("LEONARD", 1900, 4000, 4);
+insert into tb_personagens (nome, ataque, defesa, classes_personagens) values ("AMY", 7000, 500, 1);
+insert into tb_personagens (nome, ataque, defesa, classes_personagens) values ("BILBO", 3500, 200, 4);
+insert into tb_personagens (nome, ataque, defesa, classes_personagens) values ("LEGOLAS", 1200, 800, 3);
+insert into tb_personagens (nome, ataque, defesa, classes_personagens) values ("RAJ", 900, 400, 2);
+
+-- TESTES SELECTS
+select * from tb_personagens;
+select * from tb_personagens where ataque > 2000;
+select * from tb_personagens where defesa >= 1000 and defesa < 2000;
+select * from tb_personagens where nome like "%C%";
+
+-- JUNÇÃO DAS DUAS TABELAS
+select * from tb_personagens
+inner join tb_classes on tb_classes.id_classes = tb_personagens.classes_personagens

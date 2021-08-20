@@ -1,0 +1,69 @@
+-- CRIAÇÃO DB
+create database voo321;
+use voo321;
+
+-- CRIAÇÃO DA TABELA
+create table aviao(
+id_aviao int (11) not null,
+modelo varchar (50) not null,
+primary key (id_aviao)
+)
+-- SEGURANÇA DA TABELA
+engine = InnoDB;
+
+desc aviao;
+show tables;
+
+/*pra evitar o DROP na tabela:
+ALTER TABLE tripulantes
+ADD foreign key (id_aviao) references aviao(id_aviao);*/
+
+-- CRIAÇÃO DA TABELA COM REF A CHAVE PRIMARIA E USANDO CHAVE ESTRANGEIRA 
+create table tripulantes (
+id_tripulacao int (11) not null,
+nome varchar (50) not null,
+genero char (1) not null check (genero in ('F', 'M', 'N')),
+id_aviao int (11) not null,
+foreign key(id_aviao) references aviao(id_aviao),
+primary key (id_tripulacao)
+) engine=InnoDB
+
+-- POPULAR AVIÃO
+insert into aviao values (1, 'Zoom'), (2, 'Boing'), (3, 'Excelcior');
+
+desc aviao; 
+
+-- POPULAR TRIPULAÇÃO
+INSERT INTO tripulantes VALUES (16,'James Kirk', 'M', 1);
+INSERT INTO tripulantes VALUES (86,'Catherine', 'F', 2);
+INSERT INTO tripulantes VALUES (87,' Uhura', 'F', 1);
+INSERT INTO tripulantes VALUES (48, 'Ikaru Sulu', 'M', 3);
+INSERT INTO tripulantes VALUES (52, 'Tuvok', 'M', 2);
+INSERT INTO tripulantes VALUES (1,'Jhony','M',1);
+INSERT INTO tripulantes VALUES (20, 'Sasha', 'N', 2);
+INSERT INTO tripulantes VALUES (30, 'Uhura', 'F', 1);
+INSERT INTO tripulantes VALUES (66, 'Price', 'N', 3);
+INSERT INTO tripulantes VALUES (55, 'Taira', 'N', 2);
+
+select * from tripulantes;
+
+select * from tripulantes where genero = 'F';
+
+update tripulantes set genero = 'N' 
+where genero = 'F';
+
+select * from tripulantes where genero = 'N';
+
+-- DESTRAVAR MODO DE SEGURANÇA E FAZER UPDATE
+SET SQL_SAFE_UPDATES = 0;
+
+
+CREATE TABLE tb_personagens(
+	id bigint(5) AUTO_INCREMENT,
+	nome varchar(30) NOT Null,
+	ataque BIGINT(5),
+	defesa BIGINT(5),
+	classe_id bigint not null,
+	PRIMARY key (id),
+	FOREIGN KEY (classe_id) references tb_classes (id_classe)
+);
