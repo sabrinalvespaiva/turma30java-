@@ -1,0 +1,76 @@
+create database db_estoque;
+-- PARA DELETAR A BASE DE DADOS drop database db_estoque
+
+-- PARA CRIAR A TABELA MARCAS- UMA MARCA TER VARIOS PRODUTOS MAS UM PRODUTO SO 
+-- TEM UMA MARCA - N 1 PARA 1 N
+
+use db_estoque;
+create table tb_marcas(
+id bigint(5) auto_increment, -- LIMITADO A UMA SEQUENCIA DE 5 CARACTERES 99999
+nome varchar(20) not null,
+ativo boolean,
+-- INFORMAR QUAL COLUNA CARREGA A INFORMAÇÃO DE SER UMA CHAVE PRIMARIA
+primary key(id)
+);
+
+-- PARA VER TODAS AS COLUNAS DA TABELA 
+select * from tb_marcas;
+
+insert into tb_marcas (nome, ativo) values ("Nike", true);
+
+-- PARA ATUALIZAR ALGUMA INFORMAÇÃO 
+update tb_marcas set nome = "Fatal Surf", ativo = true where id = 1;
+
+-- PARA SELECIONAR SOMENTE UM ID OU UM NOME PARECIDO
+select * from tb_marcas where id = 2;
+select * from tb_marcas where nome like "%fa%";
+select * from tb_marcas where ativo = true;
+
+-- PARA DELETAR
+delete from tb_marcas where id = 1;
+
+-- CRIANDO OUTRA TABELA 
+create table tb_produtos (
+id bigint auto_increment,
+nome varchar(30) not null,
+preco decimal(10,2),
+marca_id bigint not null, 
+
+-- TODA TABELA TEM UMA CHAVE PRIMARIA
+primary key (id),
+-- DEFINIR QUAL COLUNA SERA MINHA CHAVE ESTRANGEIRA E A CHAVE PRIMARIA DE REFERENCIA
+foreign key (marca_id) references tb_marcas (id)
+)
+
+-- POPULAR A TABELA PRODUTOS
+insert into tb_produtos (nome, preco, marca_id) values 
+("tenis", 69.99, 3); # nesse caso esse produto pertense a marca adidas
+
+select * from tb_produtos where nome like "%te%";
+select * from tb_produtos where preco > 60.00; 
+
+-- PARA CRUZAR INFORMAÇOES DE DUAS TABELAS 
+select * from tb_produtos inner join tb_marcas on tb_marcas.id = tb_produtos.marca_id
+
+-- PARA SELECIONAR COLUNAS ESPECIFICAS COM INNER JOIN
+select tb_produtos.nome, tb_produtos.preco, tb_marcas.nome from tb_produtos 
+inner join tb_marcas on tb_marcas.id = tb_produtos.marca_id;
+
+-- PARA ESPECIFICARMOS AINDA MAIS PODEMOS ESCOLHER UMA MARCAR E UM VALOR 
+select tb_produtos.nome, tb_produtos.preco, tb_marcas.nome
+from tb_produtos inner join tb_marcas on tb_marcas.id = tb_produtos.marca_id
+where tb_marcas.nome like "%nike%"
+and tb_produtos.preco < 50.00 and tb_produtos.nome = "meias";
+
+-- PARA USAR O LEFT JOIN
+select * from tb_produtos left join tb_marcas on tb_marcas.id = tb_produtos.marca_id;
+
+-- PARA USAR O RIGHT JOIN
+select * from tb_produtos right join tb_marcas on tb_marcas.id = tb_produtos.marca_id;
+
+
+
+
+
+
+
